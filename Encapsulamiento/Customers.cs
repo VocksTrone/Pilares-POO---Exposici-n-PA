@@ -43,7 +43,7 @@ namespace Encapsulamiento
                 Console.ReadKey();
             }
         }
-        public static void AssingCreditCard(ref List<Customers> customersList, ref List<CreditCard> creditCardsList)
+        public static void AssignCreditCard(ref List<Customers> customersList, ref List<CreditCard> creditCardList)
         {
             if (customersList.Count == 0)
             {
@@ -60,14 +60,14 @@ namespace Encapsulamiento
                 {
                     Console.Write("Número de Tarjeta: ");
                     string cardNumber = Console.ReadLine();
-                    CreditCard creditCard = creditCardsList.Find(x => x.CardNumber == cardNumber);
+                    CreditCard creditCard = creditCardList.Find(x => x.CardNumber == cardNumber);
                     if (creditCard == null)
                     {
                         Console.Write("Límite de Crédito: ");
                         double creditLimit = double.Parse(Console.ReadLine());
                         Console.Write("Saldo Inicial: ");
                         double amount = double.Parse(Console.ReadLine());
-                        creditCardsList.Add(new CreditCard(cardNumber, creditLimit, amount));
+                        creditCardList.Add(new CreditCard(cardNumber, creditLimit, amount, id));
                         Console.WriteLine("\nTarjeta de Crédito Asignada Correctamente");
                         Console.ReadKey();
                     }
@@ -88,41 +88,38 @@ namespace Encapsulamiento
         {
             creditCardsList.Add(creditCard);
         }
-        public void ShowCreditCards(ref List<CreditCard> creditCardsList)
-        {
-            if (creditCardsList.Count == 0)
-            {
-                Console.WriteLine("No Existen Tarjetas Asociadas");
-            }
-            else
-            {
-                Console.WriteLine("\nTarjetas de Crédito");
-                foreach (var creditCard in creditCardsList)
-                {
-                    creditCard.ShowCardInfo();
-                    Console.WriteLine("");
-                }
-                Console.ReadKey();
-            }
-        }
         public static void ShowInfoCustomer(ref List<Customers> customersList, ref List<CreditCard> creditCardsList)
         {
             if (customersList.Count == 0)
             {
-                Console.WriteLine("No Existen Clientes Registrados");
+                Console.WriteLine("\nNo Existen Clientes Registrados");
                 Console.ReadKey();
             }
             else
             {
                 Console.Clear();
-                Console.Write("ID del Cliente: ");
+                Console.Write("ID del CLiente: ");
                 int id = int.Parse(Console.ReadLine());
                 Customers customer = customersList.Find(x => x.ID == id);
                 if (customer != null)
                 {
+                    Console.Clear();
+                    Console.WriteLine("Datos Generales");
                     Console.WriteLine("");
                     customer.ShowInformation();
-                    customer.ShowCreditCards(ref creditCardsList);
+                    Console.WriteLine("\nDatos Crediticios");
+                    CreditCard card = creditCardsList.Find(x => x.CustomerID == id);
+                    if (card != null)
+                    {
+                        Console.WriteLine("");
+                        card.ShowCardInfo();
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nNo Existen Tarjetas Asociadas al Cliente");
+                        Console.ReadKey();
+                    }
                 }
                 else
                 {
@@ -135,16 +132,37 @@ namespace Encapsulamiento
         {
             if (customersList.Count == 0)
             {
-                Console.WriteLine("No Existen Clientes Registrados");
+                Console.WriteLine("\nNo Existen Clientes Registrados");
                 Console.ReadKey();
             }
             else
             {
-                foreach (var customer in customersList)
+                Console.Clear();
+                Console.WriteLine("Clientes Registrados");
+                foreach (Customers customer in customersList)
                 {
+                    Console.WriteLine("");
                     customer.ShowInformation();
-                    customer.ShowCreditCards(ref creditCardsList);
-                    Console.WriteLine("--------------------------");
+                    bool hasCreditCard = false;
+                    foreach (CreditCard creditCard in creditCardsList)
+                    {
+                        if (creditCard.CustomerID == customer.ID)
+                        {
+                            if (!hasCreditCard)
+                            {
+                                Console.WriteLine("\nDatos Crediticios:");
+                                hasCreditCard = true;
+                            }
+                            Console.WriteLine("");
+                            creditCard.ShowCardInfo();
+                        }
+                    }
+                    if (!hasCreditCard)
+                    {
+                        Console.WriteLine("\nDatos Crediticios");
+                        Console.WriteLine("\nNo Existen Tarjetas de Crédito Asociadas");
+                    }
+                    Console.WriteLine("\n-------------------------");
                 }
                 Console.ReadKey();
             }

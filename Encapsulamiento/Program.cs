@@ -45,7 +45,7 @@ void SwitchFirstMenu()
             Customers.AddCustomer(ref customersList);
             break;
         case 2:
-            Customers.AssingCreditCard(ref customersList, ref creditCardsList);
+            Customers.AssignCreditCard(ref customersList, ref creditCardsList);
             break;
         case 3:
             Customers.ShowInfoCustomer(ref customersList, ref creditCardsList);

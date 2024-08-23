@@ -11,6 +11,7 @@ namespace Encapsulamiento
         private string cardnumber;
         private double credilLimit;
         private double amount;
+        public int CustomerID { get; set; }
         public string CardNumber
         {
             get { return cardnumber; }
@@ -26,11 +27,12 @@ namespace Encapsulamiento
             get{ return amount;}
             set { amount = value; }
         }
-        public CreditCard(string cardnumber, double creditlimit, double amount)
+        public CreditCard(string cardnumber, double creditlimit, double amount, int customerID)
         {
             this.cardnumber = cardnumber;
             this.credilLimit = creditlimit;
             this.amount = amount;
+            CustomerID = customerID;
         }
         public void ShowCardInfo()
         {
